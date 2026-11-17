@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       publish_tag:
-        description: "Publish an existing GitHub Release to npm using OIDC (empty = prepare only)"
+        description: "Stage an existing GitHub Release on npm using OIDC (empty = prepare only)"
         type: string
         required: false
         default: ""
@@ -155,14 +155,17 @@ jobs:
       - name: Install verification tools
         run: npm ci --ignore-scripts --no-audit --no-fund
 
-      - name: Verify npm supports trusted publishing
+      - name: Install npm with staged publishing support
+        run: npm install --global npm@11.19.1 --ignore-scripts --no-audit --no-fund
+
+      - name: Verify npm supports staged publishing
         run: |
           npm --version | node --input-type=module -e '
             let version = "";
             for await (const chunk of process.stdin) version += chunk;
-            const [major, minor, patch] = version.trim().split(".").map(Number);
-            if (!(major > 11 || (major === 11 && (minor > 5 || (minor === 5 && patch >= 1))))) {
-              throw new Error("Trusted publishing requires npm >=11.5.1; got " + version.trim());
+            const [major, minor] = version.trim().split(".").map(Number);
+            if (!(major > 11 || (major === 11 && minor >= 15))) {
+              throw new Error("Staged publishing requires npm >=11.15.0; got " + version.trim());
             }
           '
 
@@ -189,9 +192,17 @@ jobs:
       - name: Verify release and public source availability before npm publication
         run: node scripts/verify-publish.mjs release-assets
 
-      - name: Publish verified runtime to npm using OIDC
+      - name: Stage verified runtime on npm using OIDC
         run: |
           version="$(node -p 'require("./package.json").version')"
-          npm publish "./release-assets/litesurf-v$version.tgz" \
+          npm stage publish "./release-assets/litesurf-v$version.tgz" \
             --ignore-scripts --access public --provenance \
             --registry https://registry.npmjs.org
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ### npm package submitted for review
+
+          The package was staged. A maintainer must review and approve it with 2FA before it goes live.
+
+          Use npm 11.15 or newer: `npm stage list litesurf`, then `npm stage view <stage-id>` and `npm stage approve <stage-id>`.
+          Approval is also available in the Staged Packages tab on npmjs.com.
+          EOF

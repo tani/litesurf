@@ -4,7 +4,7 @@ import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { glob } from "zx";
 import { basename, dirname, join, resolve } from "node:path";
 import { parse as parseToml } from "smol-toml";
-import { UPSTREAM } from "../lib/project.mjs";
+import { UPSTREAM, BAZEL_BUILD_FLAGS } from "../lib/project.mjs";
 import { json } from "../lib/shell.mjs";
 import { readJson } from "../lib/files.mjs";
 
@@ -20,7 +20,7 @@ export async function collectCrates(bazel) {
   for (const [artifact, target] of Object.entries(TARGETS)) {
     const graph = await json({
       cwd: UPSTREAM,
-    })`${bazel} cquery ${`kind("rust_.*", deps(${target}))`} --output=jsonproto`
+    })`${bazel} cquery ${`kind("rust_.*", deps(${target}))`} ${BAZEL_BUILD_FLAGS} --output=jsonproto`
       .quiet()
       .json();
     const wasmConfigs = new Set(

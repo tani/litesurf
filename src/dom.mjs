@@ -21,6 +21,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const DEFAULT_DIST = fileURLToPath(new URL("../dist/", import.meta.url));
 const registrations = new WeakSet();
+/** @type {Map<string, Promise<typeof import("../dist/dom/core.js")>>} */
+const cores = new Map();
 
 class Storage {
   /** @type {Map<string, string>} */
@@ -51,6 +53,21 @@ class Storage {
 
 /** @param {string} dist */
 async function loadCore(dist) {
+  let pending = cores.get(dist);
+  if (!pending) {
+    pending = initializeCore(dist).catch((error) => {
+      cores.delete(dist);
+      throw error;
+    });
+    cores.set(dist, pending);
+  }
+  return pending;
+}
+
+/** Read and initialize each distribution once; failed loads remain retryable.
+ * @param {string} dist
+ */
+async function initializeCore(dist) {
   const worker = resolve(dist, "worker");
   const names = readdirSync(worker);
   const find = (/** @type {string} */ suffix) => {

@@ -3,6 +3,10 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { registerDOM } from "litesurf/dom";
+import { mkdtempSync, rmSync, symlinkSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { verifyDOM } from "./fixtures/dom-contract.mjs";
 
 test("Wasm DOM provides synchronous browser globals, CSS, layout, and events", async () => {
@@ -67,4 +71,23 @@ test("failed setup releases registration and cleanup cancels animation frames", 
   environment[Symbol.dispose]();
   await new Promise((resolve) => setTimeout(resolve, 30));
   assert.equal(called, false);
+});
+
+test("a failed distribution load can be retried after its files become available", async () => {
+  const dist = mkdtempSync(join(tmpdir(), "litesurf-dom-retry-"));
+  try {
+    await assert.rejects(registerDOM({ dist }), /ENOENT/);
+    const built = fileURLToPath(new URL("../dist/", import.meta.url));
+    for (const name of ["worker", "dom"]) symlinkSync(join(built, name), join(dist, name), "dir");
+    const environment = await registerDOM({ dist });
+    try {
+      assert.equal(environment.document.body.innerHTML, "");
+      environment.document.body.innerHTML = "<p>Recovered</p>";
+      assert.equal(environment.document.querySelector("p").textContent, "Recovered");
+    } finally {
+      environment.close();
+    }
+  } finally {
+    rmSync(dist, { recursive: true, force: true });
+  }
 });

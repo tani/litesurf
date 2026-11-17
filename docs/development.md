@@ -29,6 +29,10 @@ loads the Worker configuration and discovers its modules. The DOM adapters in
 `scripts/build-dom.mjs` bundles existing Bazel DOM-shim and internal-state outputs
 into `dist/dom/shim.mjs`, with private shim state per registration. It also copies
 the generated core type declarations. No upstream files are modified.
+The DOM loader initializes each distribution's Wasm once per module instance;
+later registrations reuse the core without rereading the Wasm file. Documents,
+constructors, storage, and shim state remain fresh. Failed initialization can
+be retried. See the [DOM runtime review](audits/2026-11-17-dom-runtime.md).
 
 Only `src/`, `bin/`, `dist/`, and package documentation are included in the npm
 tarball. Upstream source, tests, build scripts, and source maps are excluded.
@@ -95,6 +99,16 @@ The adapter invokes the existing `//packages/engine:dist` target and copies its
 output into `dist/` as regular files, including fonts behind Bazel runfile links.
 It neither installs workspace dependencies into upstream nor edits its sources.
 
+Rust/Wasm runtime settings keep upstream's O3, SIMD, and single codegen unit.
+An experimental `LITESURF_RUST_PROFILE=core-o2 npm run build` changes only the
+core crate to O2. It is for comparison, not an established speed improvement.
+`npm run bench:dom -- /path/to/dist` measures DOM parsing, selectors, and real
+CSS/layout with fresh documents and reports the Wasm hash. Build, output lookup,
+and release dependency queries share the selected profile; `dist/upstream.json`
+records it. Restore the default with `npm run build`. See the
+[runtime optimization review](audits/2026-11-17-rust-runtime.md) for measurements,
+rejected options, and comparison instructions.
+
 `npm run check` verifies the submodule pin, rejects local upstream changes,
 checks adapter JavaScript syntax and JSDoc types, generates public declarations,
 and runs focused runtime and CLI tests.
@@ -144,7 +158,7 @@ rebuilt for publication. Publishing to npm remains a separate, explicit action.
 | `npm run check`        | Source pin, JavaScript syntax, and runtime tests                |
 | `npm run test:e2e`     | Browser behavior with the real engine                           |
 | `npm run test:package` | Install and exercise the npm tarball                            |
-| `npm run test:release` | Python release-integrity tests                                  |
+| `npm run test:release` | Release-integrity tests                                         |
 | `npm run clean`        | Remove temporary staging directories                            |
 
 Cleanup preserves `dist/`, `release/`, `node_modules/`, and the upstream checkout.

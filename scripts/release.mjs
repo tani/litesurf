@@ -4,7 +4,7 @@
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { parseArgs } from "node:util";
-import { ROOT, BAZEL, isMain, packageManifest } from "./lib/project.mjs";
+import { ROOT, BAZEL, BAZEL_BUILD_FLAGS, isMain, packageManifest } from "./lib/project.mjs";
 import { run, upstream } from "./lib/shell.mjs";
 import { verifyDist } from "./verify-dist.mjs";
 import { writeJson } from "./lib/files.mjs";
@@ -23,9 +23,15 @@ export async function prepare({ repository = "tani/litesurf", skipBuild = false 
     throw new Error("repository must be owner/name");
   const tag = `v${version}`;
   await run`npm run ${skipBuild ? "build:types" : "build"}`;
-  const revision = verifyDist().revision;
+  const provenance = verifyDist();
+  if (JSON.stringify(provenance.build?.bazelFlags ?? []) !== JSON.stringify(BAZEL_BUILD_FLAGS)) {
+    throw new Error(
+      "Rebuild dist with the selected LITESURF_RUST_PROFILE before preparing a release",
+    );
+  }
+  const revision = provenance.revision;
 
-  const bin = (await upstream`${BAZEL} info bazel-bin`.quiet()).stdout.trim();
+  const bin = (await upstream`${BAZEL} info bazel-bin ${BAZEL_BUILD_FLAGS}`.quiet()).stdout.trim();
   const { crates, artifactIds } = await collectCrates(BAZEL);
   const npmPackages = collectNpm(join(bin, "packages/engine"));
   const work = join(ROOT, ".release-work", tag);

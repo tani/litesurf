@@ -4,6 +4,8 @@ import { existsSync, mkdtempSync, renameSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import {
   BAZEL,
+  BAZEL_BUILD_FLAGS,
+  RUST_PROFILE,
   DIST,
   ROOT,
   UPSTREAM,
@@ -46,13 +48,14 @@ function stageDistribution(engine, staged, revision) {
     repository: UPSTREAM_REPOSITORY,
     revision,
     miniflare: packageManifest().dependencies.miniflare,
+    build: { profile: RUST_PROFILE, bazelFlags: BAZEL_BUILD_FLAGS },
   });
 }
 
 export async function build() {
   const revision = verifyUpstream();
-  await upstream({ stdio: "inherit" })`${BAZEL} build //packages/engine:dist`;
-  const bin = (await upstream`${BAZEL} info bazel-bin`.quiet()).stdout.trim();
+  await upstream({ stdio: "inherit" })`${BAZEL} build //packages/engine:dist ${BAZEL_BUILD_FLAGS}`;
+  const bin = (await upstream`${BAZEL} info bazel-bin ${BAZEL_BUILD_FLAGS}`.quiet()).stdout.trim();
   const staged = mkdtempSync(join(ROOT, ".dist-build-"));
   try {
     stageDistribution(join(bin, "packages/engine"), staged, revision);

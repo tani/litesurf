@@ -1,6 +1,6 @@
 {
   "name": "litesurf",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Run the Kitesurf browser engine locally from Node.js",
   "license": "Apache-2.0",
   "repository": {

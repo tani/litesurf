@@ -88,8 +88,8 @@ The test adapters register synchronous browser globals backed by Kitesurf's Wasm
 DOM, CSS, and layout engine. Existing tests can use `document`, `window`, DOM
 events, and React Testing Library directly.
 
-These adapters are new and are not included in npm version 0.0.1. Build this
-checkout with `npm ci` and `npm run build` until the next release.
+These adapters are available starting with version 0.0.2. For source checkouts,
+install dependencies with `npm ci` and build with `npm run build`.
 
 For Vitest, replace the `jsdom` or `happy-dom` environment with the exported
 custom environment:

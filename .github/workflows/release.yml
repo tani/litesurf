@@ -27,6 +27,10 @@ jobs:
           node-version: "24"
           cache: npm
 
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: "1.4.4"
+
       - name: Verify release version
         id: version
         env:
@@ -57,6 +61,8 @@ jobs:
         run: |
           npm run check
           npm run test:e2e
+          npm run test:vitest
+          npm run test:bun
           npm run test:release
 
       - name: Verify final release tarballs

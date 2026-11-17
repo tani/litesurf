@@ -4,7 +4,7 @@
 
 ```text
 litesurf/
-  src/                 Node.js API, JSDoc types, and Miniflare lifecycle
+  src/                 launch API, DOM environments, JSDoc types, and lifecycle
   bin/                 litesurf CLI
   scripts/             build, provenance, cleanup, and release entry points
     lib/               shared paths, zx presets, files, and archives
@@ -24,7 +24,11 @@ applied to it. Changes previously made to Kitesurf's package files, Bazel target
 README, and test launcher have been removed; the adapter is owned entirely here.
 The runtime loader was extracted from upstream's `scripts/wpt-engine.mjs`.
 `src/index.mjs` owns the public API and shutdown lifecycle; `src/worker.mjs`
-loads the Worker configuration and discovers its modules.
+loads the Worker configuration and discovers its modules. The DOM adapters in
+`dom.mjs`, `vitest.mjs`, and `bun.mjs` reuse the core Wasm directly in Node/Bun.
+`scripts/build-dom.mjs` bundles existing Bazel DOM-shim and internal-state outputs
+into `dist/dom/shim.mjs`, with private shim state per registration. It also copies
+the generated core type declarations. No upstream files are modified.
 
 Only `src/`, `bin/`, `dist/`, and package documentation are included in the npm
 tarball. Upstream source, tests, build scripts, and source maps are excluded.
@@ -99,6 +103,12 @@ tarball, installs it in a temporary project with registry access, and verifies
 TypeScript imports (including `await using` and invalid arguments), page JavaScript,
 and PNG rendering independently of the source checkout. Both browser tests use
 the same `test/fixtures/browser.mjs` contract.
+
+Run `npm run test:vitest` and `npm run test:bun` for the real framework integrations.
+They exercise synchronous DOM/CSS/layout, events, and React Testing Library.
+The package test also runs them from a separately installed tarball (the Bun
+part runs when Bun is installed). CI pins Bun 1.4.4. `LITESURF_TEST_VITEST_VERSION`
+can select another compatible Vitest version for the installed-package test.
 
 Use `npm start -- --port 8787` during development. `npm pack` requires a prepared
 license/source release and checks that the package matches its verified runtime

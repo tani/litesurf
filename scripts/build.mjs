@@ -14,6 +14,7 @@ import {
 import { upstream } from "./lib/shell.mjs";
 import { copyTree, readJson, writeJson } from "./lib/files.mjs";
 import { verifyUpstream } from "./upstream.mjs";
+import { buildDOM } from "./build-dom.mjs";
 
 const UPSTREAM_NOTICES = [
   ["LICENSE", "Kitesurf-LICENSE"],
@@ -55,6 +56,7 @@ export async function build() {
   const staged = mkdtempSync(join(ROOT, ".dist-build-"));
   try {
     stageDistribution(join(bin, "packages/engine"), staged, revision);
+    await buildDOM(bin, join(staged, "dom"));
     if (verifyUpstream() !== revision) throw new Error("Kitesurf changed during the build");
     if (existsSync(DIST)) rmSync(DIST, { recursive: true, force: true });
     renameSync(staged, DIST);

@@ -7,7 +7,7 @@ It is an independent adapter, not an official Cloudflare package.
 
 ## Use the package
 
-After publication, install `litesurf` and a CDP client in your application:
+Install `litesurf` and a CDP client in your application:
 
 ```sh
 npm install litesurf puppeteer-core
@@ -81,6 +81,73 @@ npx litesurf --port 8787
 `LITESURF_PORT` also sets the CLI port. Miniflare handles SIGINT/SIGTERM and
 terminates its workerd child. The engine's CDP identifiers, bindings, and browser
 version still use the upstream Kitesurf names.
+
+## DOM test environments
+
+The test adapters register synchronous browser globals backed by Kitesurf's Wasm
+DOM, CSS, and layout engine. Existing tests can use `document`, `window`, DOM
+events, and React Testing Library directly.
+
+These adapters are new and are not included in npm version 0.0.1. Build this
+checkout with `npm ci` and `npm run build` until the next release.
+
+For Vitest, replace the `jsdom` or `happy-dom` environment with the exported
+custom environment:
+
+```js
+// vitest.config.mjs
+import { fileURLToPath } from "node:url";
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  test: {
+    environment: fileURLToPath(import.meta.resolve("litesurf/vitest")),
+    environmentOptions: {
+      litesurf: { url: "http://localhost:3000/", width: 1280, height: 720 },
+    },
+  },
+});
+```
+
+For Bun, use its preload configuration. Bun's built-in `environment` setting
+supports `node`, `happy-dom`, and `jsdom`; custom names are not supported
+([Bun documentation](https://bun.sh/docs/test/dom)).
+
+```toml
+# bunfig.toml
+[test]
+environment = "node"
+preload = ["litesurf/bun"]
+```
+
+The test body stays the same:
+
+```js
+import { test, expect } from "vitest"; // or "bun:test"
+
+test("DOM manipulation", () => {
+  document.body.innerHTML = '<button id="save">Save</button>';
+  const button = document.querySelector("#save");
+  button.addEventListener("click", () => {
+    button.textContent = "Saved";
+  });
+  button.click();
+  expect(button.textContent).toBe("Saved");
+});
+```
+
+Vitest restores the previous globals when its environment is torn down. Bun's
+preload keeps a DOM for the process and releases it on exit; `bun test --isolate`
+also works. To configure a custom preload, use `await registerDOM(options)` from
+`litesurf/dom` and register `environment.close()` with your process or runner's
+cleanup hook. Options are `html`, `url`, `width`, `height`, and `dist`.
+For TypeScript, include `DOM` and `DOM.Iterable` in `compilerOptions.lib` when
+your project restricts the default libraries.
+
+This provides the in-process DOM layer, without starting workerd. It does not
+execute scripts from the initial HTML or load external resources. The supported
+DOM APIs follow the pinned Kitesurf shim; complete jsdom API parity is not claimed.
+Use `launch()` and CDP when a test needs full browser navigation.
 
 ## Licenses
 

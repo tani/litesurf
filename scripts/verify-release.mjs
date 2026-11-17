@@ -37,6 +37,8 @@ async function verifyRuntime(directory, manifest) {
   }
   const captured = new Set(
     [
+      "package.json",
+      "dist/dom/shim.mjs",
       ...ADAPTED_RUNTIME_FILES,
       "dist/licenses/THIRD_PARTY_NOTICES.txt",
       "dist/licenses/SOURCE_AVAILABILITY.txt",
@@ -60,6 +62,24 @@ async function verifyRuntime(directory, manifest) {
     return data.toString("utf8");
   };
   const notices = read("dist/licenses/THIRD_PARTY_NOTICES.txt");
+  const packageInfo = JSON.parse(read("package.json"));
+  if (packageInfo.exports?.["./dom"]) {
+    for (const name of [
+      "dist/dom/core.d.ts",
+      "dist/types/dom.d.mts",
+      "dist/types/vitest.d.mts",
+      "dist/types/bun.d.mts",
+      "src/dom.mjs",
+      "src/vitest.mjs",
+      "src/bun.mjs",
+    ]) {
+      if (!runtime.has(`package/${name}`))
+        throw new Error(`Missing DOM environment distribution file: ${name}`);
+    }
+    if (!read("dist/dom/shim.mjs").includes(MODIFICATION_NOTICE)) {
+      throw new Error("Missing modification notice: dist/dom/shim.mjs");
+    }
+  }
   for (const name of ADAPTED_RUNTIME_FILES) {
     if (!read(name).includes(MODIFICATION_NOTICE)) {
       throw new Error(`Missing modification notice: ${name}`);

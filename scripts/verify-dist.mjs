@@ -8,6 +8,11 @@ import { verifyUpstream } from "./upstream.mjs";
 
 const REQUIRED_FILES = [
   "types/index.d.mts",
+  "types/dom.d.mts",
+  "types/vitest.d.mts",
+  "types/bun.d.mts",
+  "dom/shim.mjs",
+  "dom/core.d.ts",
   "worker/index.js",
   "worker/engine-mf.json",
   "public/fonts/OFL.txt",

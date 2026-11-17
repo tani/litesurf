@@ -11,6 +11,8 @@
 - Keep public API types in JSDoc; generate `dist/types/index.d.mts` with `npm run build:types`.
 - Use zx for management-script command execution; keep it a development dependency.
 - Reuse zx fs/glob/tmpdir and the working-directory presets in scripts/lib/shell.mjs.
+- Run npm run test:vitest and npm run test:bun after DOM environment changes.
+- Keep DOM test globals synchronous and backed by the existing Wasm and DOM shim; do not substitute another DOM emulator.
 - Run upstream checks when changing the pinned upstream revision, not for adapter-only changes.
 - Never publish or push unless explicitly requested. Do not commit generated `dist/` or tarballs.
 - Keep release orchestration in `scripts/release.mjs` and its stages in `scripts/release/`; pair runtime archives with their matching sources.

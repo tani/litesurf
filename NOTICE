@@ -19,3 +19,8 @@ dist/licenses/ for upstream notices, license texts, and the source Cargo locks.
 Release tarballs also include dist/licenses/THIRD_PARTY_NOTICES.txt and
 dist/licenses/SOURCE_AVAILABILITY.txt. The latter identifies the accompanying
 source archive, including the exact patched MPL-2.0 dependency sources.
+
+The synchronous DOM test environments reuse Kitesurf's DOM shim, internal state,
+and the same core Wasm. The generated dist/dom/shim.mjs wraps the unmodified
+upstream bundles in a per-environment factory, with an explicit modification
+notice. Their original sources are included in the matching source archive.

@@ -9,7 +9,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "target": "ES2023",
-    "lib": ["ES2023", "ESNext.Disposable"],
+    "lib": ["ES2023", "ESNext.Disposable", "DOM", "DOM.Iterable"],
     "types": ["node"],
     "skipLibCheck": true,
     "rootDir": "src",

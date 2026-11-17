@@ -44,7 +44,7 @@ function distModules(root) {
 
 /**
  * Resolve the packaged Worker configuration and apply caller overrides.
- * @param {import("./index.mjs").StartLitesurfOptions} options
+ * @param {import("./index.mjs").LaunchOptions} options
  * @returns {import("miniflare").V4WorkerOptions}
  */
 export function workerOptions(options) {

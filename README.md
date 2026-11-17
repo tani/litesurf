@@ -14,10 +14,10 @@ npm install litesurf puppeteer-core
 ```
 
 ```js
-import { startLitesurf } from "litesurf";
+import { launch } from "litesurf";
 import puppeteer from "puppeteer-core";
 
-await using engine = await startLitesurf();
+await using engine = await launch();
 const browser = await puppeteer.connect({
   browserWSEndpoint: engine.browserWSEndpoint,
 });
@@ -39,7 +39,7 @@ Shutdown is asynchronous, so use `await using` for the engine.
 Node.js 22 remains supported with explicit cleanup:
 
 ```js
-const engine = await startLitesurf();
+const engine = await launch();
 try {
   // Use the engine here.
 } finally {
@@ -50,7 +50,7 @@ try {
 Installing a built npm tarball does not require Rust, Bazel, a Kitesurf checkout, or a Cloudflare account. Miniflare installs a
 platform-specific workerd executable as a dependency.
 
-`startLitesurf({ port, inspectorPort, dist, assets, bindings })` supports an
+`launch({ port, inspectorPort, dist, assets, bindings })` supports an
 optional loopback port (`0`, the default, chooses an available port), inspector
 port, prebuilt Worker directory, public asset directory, and Worker variable
 overrides. It returns `url`, `browserWSEndpoint`, `fetch(url, init)` for direct
@@ -62,11 +62,11 @@ TypeScript declarations are generated from the API's JSDoc and included in the
 package. The options and engine types can also be imported explicitly:
 
 ```ts
-import { startLitesurf } from "litesurf";
-import type { Litesurf, StartLitesurfOptions } from "litesurf";
+import { launch } from "litesurf";
+import type { Litesurf, LaunchOptions } from "litesurf";
 
-const options: StartLitesurfOptions = { port: 0 };
-await using engine: Litesurf = await startLitesurf(options);
+const options: LaunchOptions = { port: 0 };
+await using engine: Litesurf = await launch(options);
 ```
 
 Use ESM with TypeScript's `NodeNext` resolution (or `Bundler` in a compatible

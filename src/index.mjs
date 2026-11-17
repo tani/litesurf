@@ -7,7 +7,7 @@ import { workerOptions } from "./worker.mjs";
 
 /**
  * Options for starting a local browser engine.
- * @typedef {object} StartLitesurfOptions
+ * @typedef {object} LaunchOptions
  * @property {number} [port=0] HTTP port on 127.0.0.1; 0 chooses an available port.
  * @property {number} [inspectorPort] Optional Miniflare Worker inspector port.
  * @property {string} [dist] Prebuilt Worker directory; defaults to the packaged dist/worker.
@@ -32,14 +32,14 @@ import { workerOptions } from "./worker.mjs";
 /**
  * Start the packaged Kitesurf engine on the loopback interface.
  * Importing this module does not start any processes.
- * @param {StartLitesurfOptions} [options] Port, distribution, assets, and binding overrides.
+ * @param {LaunchOptions} [options] Port, distribution, assets, and binding overrides.
  * @returns {Promise<Litesurf>} The ready engine and its shutdown methods.
  * @throws {RangeError} If the HTTP port is not an integer between 0 and 65535.
  * @example
- * await using engine = await startLitesurf({ port: 0 });
+ * await using engine = await launch({ port: 0 });
  * console.log(engine.browserWSEndpoint);
  */
-export async function startLitesurf(options = {}) {
+export async function launch(options = {}) {
   const port = options.port ?? 0;
   if (!Number.isInteger(port) || port < 0 || port > 65535) {
     throw new RangeError("port must be an integer between 0 and 65535");
@@ -74,5 +74,5 @@ export async function startLitesurf(options = {}) {
   };
 }
 
-/** Backward-compatible alias of startLitesurf with the same options and return type. */
-export { startLitesurf as startKitesurf };
+/** Backward-compatible alias of launch with the same options and return type. */
+export { launch as startKitesurf };

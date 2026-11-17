@@ -3,14 +3,14 @@
 // https://opensource.org/licenses/Apache-2.0
 
 import { test } from "node:test";
-import { startLitesurf } from "litesurf";
+import { launch } from "litesurf";
 import { verifyBrowser } from "./fixtures/browser.mjs";
 
 test(
   "Node starts the real engine and Puppeteer evaluates and renders a page",
   { timeout: 120_000 },
   async () => {
-    const engine = await startLitesurf();
+    const engine = await launch();
     try {
       await verifyBrowser(engine);
     } finally {

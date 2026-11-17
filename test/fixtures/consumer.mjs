@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import assert from "node:assert/strict";
-import { startLitesurf } from "litesurf";
+import { launch } from "litesurf";
 import { verifyBrowser } from "./browser.mjs";
 
-const engine = await startLitesurf();
+const engine = await launch();
 try {
   assert.equal(engine[Symbol.asyncDispose], engine.close);
   await verifyBrowser(engine);

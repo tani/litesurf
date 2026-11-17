@@ -7,7 +7,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
 import { temporaryDirectory } from "./helpers.mjs";
-import { startLitesurf } from "litesurf";
+import { launch } from "litesurf";
 
 test("Node runtime loads modules, assets, bindings and dynamic workers, then releases its port", async (t) => {
   const root = temporaryDirectory(t);
@@ -58,7 +58,7 @@ test("Node runtime loads modules, assets, bindings and dynamic workers, then rel
     };
   `,
   );
-  const engine = await startLitesurf({ dist, bindings: { VALUE: "override" } });
+  const engine = await launch({ dist, bindings: { VALUE: "override" } });
   t.after(() => engine.close());
   assert.equal(new URL(engine.url).hostname, "127.0.0.1");
   assert.equal(engine.browserWSEndpoint, engine.url.replace("http:", "ws:") + "devtools/browser");
@@ -79,7 +79,7 @@ test("Node runtime loads modules, assets, bindings and dynamic workers, then rel
   assert.equal(engine[Symbol.asyncDispose], engine.close);
   assert.equal(engine[Symbol.asyncDispose](), closing);
   await closing;
-  const next = await startLitesurf({ dist, port: Number(new URL(engine.url).port) });
+  const next = await launch({ dist, port: Number(new URL(engine.url).port) });
   await next.close();
 });
 
@@ -110,14 +110,14 @@ test("await using releases the runtime on normal exit and exceptions", async (t)
   for (const shouldThrow of [false, true]) {
     let disposed;
     const expectedError = new Error("scope failed");
-    const running = run(startLitesurf, { dist: root }, async (engine) => {
+    const running = run(launch, { dist: root }, async (engine) => {
       disposed = engine;
       assert.equal((await engine.fetch(new URL("/", engine.url))).status, 200);
       if (shouldThrow) throw expectedError;
     });
     if (shouldThrow) await assert.rejects(running, (error) => error === expectedError);
     else await running;
-    const reopened = await startLitesurf({ dist: root, port: Number(new URL(disposed.url).port) });
+    const reopened = await launch({ dist: root, port: Number(new URL(disposed.url).port) });
     t.after(() => reopened.close());
     await reopened.close();
     assert.equal(disposed.close(), disposed[Symbol.asyncDispose]());
@@ -127,8 +127,8 @@ test("await using releases the runtime on normal exit and exceptions", async (t)
 
 test("invalid ports and a missing build produce actionable errors", async (t) => {
   for (const port of [-1, 65536, 1.5, NaN]) {
-    await assert.rejects(startLitesurf({ port }), RangeError);
+    await assert.rejects(launch({ port }), RangeError);
   }
   const root = temporaryDirectory(t);
-  await assert.rejects(startLitesurf({ dist: root }), /npm run build/);
+  await assert.rejects(launch({ dist: root }), /npm run build/);
 });

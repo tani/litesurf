@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/Apache-2.0
 
 import { parseArgs } from "node:util";
-import { startLitesurf } from "../src/index.mjs";
+import { launch } from "../src/index.mjs";
 
 try {
   const { values } = parseArgs({
@@ -19,7 +19,7 @@ try {
   if (values.help) {
     console.log("Usage: litesurf [--port <n>] [--dist <dir>] [--assets <dir>]");
   } else {
-    const engine = await startLitesurf({
+    const engine = await launch({
       port: Number(values.port),
       dist: values.dist,
       assets: values.assets,

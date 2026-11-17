@@ -165,6 +165,7 @@ nix develop      # Enter the development environment
 ```
 
 - [Development](docs/development.md): repository layout, builds, checks, and upstream updates.
+- [Agent skill](SKILL.md): instructions for using litesurf in browser automation and DOM tests.
 - [Releases](docs/releasing.md): GitHub Actions, release archives, and license/source packaging.
 - [License audit](docs/audits/README.md): the initial Wasm dependency investigation.
 

@@ -1,5 +1,8 @@
 # Audit snapshots
 
+The [published npm version comparison](2026-11-17-npm-versions.md) measures
+0.0.1 and 0.0.2 using their common browser API, with raw samples and Wasm hashes.
+
 The [Rust runtime review](2026-11-17-rust-runtime.md) records the effective Bazel
 compiler settings, tested alternatives, measurements, and reproduction steps.
 The [DOM runtime review](2026-11-17-dom-runtime.md) records the Wasm loader cache,

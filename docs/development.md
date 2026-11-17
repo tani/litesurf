@@ -109,6 +109,11 @@ records it. Restore the default with `npm run build`. See the
 [runtime optimization review](audits/2026-11-17-rust-runtime.md) for measurements,
 rejected options, and comparison instructions.
 
+`npm run bench:versions -- --pairs 5 --output /tmp/litesurf-versions.json`
+compares the published 0.0.1 and 0.0.2 npm packages using their common browser
+API. It installs the packages temporarily and alternates their order across
+fresh Node processes. See the [results and method](audits/2026-11-17-npm-versions.md).
+
 `npm run check` verifies the submodule pin, rejects local upstream changes,
 checks adapter JavaScript syntax and JSDoc types, generates public declarations,
 and runs focused runtime and CLI tests.

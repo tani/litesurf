@@ -111,6 +111,9 @@ jobs:
             release-assets/SHA256SUMS release-assets/release.json
           gh release edit "$RELEASE_TAG" --draft=false
 
+      - name: Verify source archive is publicly downloadable
+        run: node scripts/verify-publish.mjs release-assets
+
   npm_release:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && vars.NPM_PUBLISH_ENABLED == 'true'
     needs: gh_release
@@ -149,8 +152,8 @@ jobs:
           name: release-tarballs
           path: release-assets
 
-      - name: Recheck downloaded assets
-        run: node scripts/verify-release.mjs release-assets
+      - name: Verify release and public source availability before npm publication
+        run: node scripts/verify-publish.mjs release-assets
 
       - name: Publish verified runtime to npm using OIDC
         run: |

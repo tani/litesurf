@@ -82,6 +82,14 @@ npx litesurf --port 8787
 terminates its workerd child. The engine's CDP identifiers, bindings, and browser
 version still use the upstream Kitesurf names.
 
+## Licenses
+
+The litesurf adapter is licensed under Apache-2.0. Bundled engine code, Wasm,
+fonts, and other assets retain their own licenses, including MPL-2.0. The npm
+package includes third-party notices and license texts under `dist/licenses/`.
+`dist/licenses/SOURCE_AVAILABILITY.txt` identifies the matching source archive,
+including patched MPL-covered dependencies, and its SHA-256 checksum.
+
 ## Development and releases
 
 ```sh

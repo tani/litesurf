@@ -40,6 +40,20 @@ modified license-cache files. Stage source/configuration additions before
 preparing locally: the adapter source snapshot uses Git's tracked file list.
 Generated release archives and staging directories stay out of Git.
 
+The `prepack` hook requires a complete prepared release, checks its notices and
+source archive, and compares every npm package file against the verified runtime
+tarball. Changes after preparation require `npm run release:prepare` again.
+The `prepublishOnly` hook additionally requires the matching sources to be
+publicly downloadable. Local preparation and verification remain possible
+before a GitHub Release exists.
+
+Publishing a prebuilt tarball with `--ignore-scripts` bypasses npm hooks. Always
+run `node scripts/verify-publish.mjs <asset-directory>` first, as shown below.
+The workflow performs this check after publishing the GitHub Release and again
+immediately before npm publication; no GitHub token is used for the download.
+Retain published source archives for as long as the corresponding npm versions
+are distributed.
+
 The workflow checks adapter behavior and installs the actual release runtime
 tarball in a separate temporary project before publication. License inventories
 are conservative build-input inventories, not a replacement for legal review.
@@ -47,10 +61,13 @@ are conservative build-input inventories, not a replacement for legal review.
 ## npm: first publication and OIDC
 
 The first npm publication is manual. Download the assets from the first GitHub
-Release and verify them before publishing the exact runtime archive:
+Release and verify them before publishing the exact runtime archive. The
+verification anonymously downloads the source archive from its published URL
+and checks the actual bytes and SHA-256; a 404, private asset, or mismatched
+archive blocks publication:
 
 ```sh
-node scripts/verify-release.mjs release-assets
+node scripts/verify-publish.mjs release-assets
 npm login
 npm publish ./release-assets/litesurf-v0.0.1.tgz --ignore-scripts --access public --registry https://registry.npmjs.org
 ```

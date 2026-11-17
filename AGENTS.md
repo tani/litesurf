@@ -15,6 +15,8 @@
 - Never publish or push unless explicitly requested. Do not commit generated `dist/` or tarballs.
 - Keep release orchestration in `scripts/release.mjs` and its stages in `scripts/release/`; pair runtime archives with their matching sources.
 - Run `scripts/verify-release.mjs` and Node.js release tests after changing release packaging.
+- Keep prepack tied to a verified source/runtime release and verify anonymous source downloads before npm publication.
+- Retain modification notices in files adapted from upstream.
 - Pin license-cache checksums and GitHub Actions revisions; do not silently substitute missing texts.
 - Keep user instructions in README.md and maintainer instructions under docs/.
 - Keep dated audit snapshots under docs/audits/; release inventories are generated under dist/.

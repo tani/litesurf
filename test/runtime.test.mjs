@@ -1,6 +1,7 @@
 // Copyright (c) 2026 Cloudflare, Inc.
 // Licensed under the Apache 2.0 license found in the LICENSE file or at:
 // https://opensource.org/licenses/Apache-2.0
+// Modified by the litesurf contributors: adapted runtime tests for the Node.js package, modules, and asynchronous disposal.
 
 import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";

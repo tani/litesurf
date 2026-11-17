@@ -12,6 +12,7 @@ import { collectCrates, collectNpm } from "./release/dependencies.mjs";
 import { collectLicenses } from "./release/licenses.mjs";
 import { collectStandardLibrary, snapshotSources } from "./release/sources.mjs";
 import { writeAssets } from "./release/assets.mjs";
+import { verify } from "./verify-release.mjs";
 
 /** Prepare runtime archives paired with exact dependency sources and retained notices. */
 export async function prepare({ repository = "tani/litesurf", skipBuild = false } = {}) {
@@ -45,7 +46,17 @@ export async function prepare({ repository = "tani/litesurf", skipBuild = false 
     writeFileSync(join(directory, "THIRD_PARTY_NOTICES.txt"), notices.join("\n\n") + "\n");
     writeJson(join(directory, "DEPENDENCIES.json"), inventory);
   }
-  return writeAssets({ version, tag, repository, revision, sources, licenses, work });
+  const manifest = await writeAssets({
+    version,
+    tag,
+    repository,
+    revision,
+    sources,
+    licenses,
+    work,
+  });
+  await verify(join(ROOT, "release", tag));
+  return manifest;
 }
 
 if (isMain(import.meta.url)) {

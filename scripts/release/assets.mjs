@@ -7,10 +7,11 @@ import { json, upstream } from "../lib/shell.mjs";
 import { verifyDist } from "../verify-dist.mjs";
 import { posixRelative, sha256, walk, writeJson } from "../lib/files.mjs";
 import { deterministicTar } from "../lib/archive.mjs";
+import { sourceUrl } from "./metadata.mjs";
 
 export async function writeAssets({ version, tag, repository, revision, sources, licenses, work }) {
   const sourceName = `litesurf-${tag}-sources.tar.gz`;
-  const download = `https://github.com/${repository}/releases/download/${tag}/${sourceName}`;
+  const download = sourceUrl({ repository, tag, source_archive: sourceName });
   const sourceNotice =
     `Source availability for litesurf ${version}\n\n` +
     "MPL-2.0-covered sources, including Kitesurf's modifications, are provided under MPL-2.0 in the accompanying source archive.\n" +

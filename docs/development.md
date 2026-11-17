@@ -100,8 +100,10 @@ TypeScript imports (including `await using` and invalid arguments), page JavaScr
 and PNG rendering independently of the source checkout. Both browser tests use
 the same `test/fixtures/browser.mjs` contract.
 
-Use `npm start -- --port 8787` during development. `npm pack` verifies the built
-distribution and creates a tarball locally; it does not publish it. Run the build
+Use `npm start -- --port 8787` during development. `npm pack` requires a prepared
+license/source release and checks that the package matches its verified runtime
+tarball; it does not publish it. Run `npm run release:prepare` before packing.
+`npm publish` also requires the exact source archive to be publicly downloadable. Run the build
 after changing the upstream pin or Miniflare version. A build rejects a modified
 or unpinned upstream checkout.
 

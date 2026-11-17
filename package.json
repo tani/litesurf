@@ -44,13 +44,15 @@
     "test": "node --test test/runtime.test.mjs test/upstream.test.mjs test/cli.test.mjs",
     "test:e2e": "node --test test/runtime.e2e.test.mjs",
     "test:package": "node --test test/package.e2e.test.mjs",
-    "prepack": "npm run build:types && node scripts/verify-dist.mjs",
+    "prepack": "npm run build:types && node scripts/verify-package.mjs",
     "release:prepare": "node scripts/release.mjs",
     "release:verify": "node scripts/verify-release.mjs",
     "clean": "node scripts/clean.mjs",
-    "test:release": "node --test test/release.test.mjs",
+    "test:release": "node --test test/release.test.mjs test/publish.test.mjs",
     "build:types": "tsc -p tsconfig.json",
-    "check:types": "npm run build:types && tsc -p test/tsconfig.json"
+    "check:types": "npm run build:types && tsc -p test/tsconfig.json",
+    "prepublishOnly": "node scripts/verify-publish.mjs",
+    "release:verify-public": "node scripts/verify-publish.mjs"
   },
   "dependencies": {
     "miniflare": "5.20260911.1-alpha"

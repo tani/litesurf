@@ -1,6 +1,7 @@
 // Copyright (c) 2026 Cloudflare, Inc.
 // Licensed under the Apache 2.0 license found in the LICENSE file or at:
 // https://opensource.org/licenses/Apache-2.0
+// Modified by the litesurf contributors: extracted and changed the Node.js launch API, package loading, and asynchronous disposal.
 
 import { Miniflare, convertV4MiniflareOptions } from "miniflare";
 import { workerOptions } from "./worker.mjs";

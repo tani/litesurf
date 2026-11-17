@@ -2,6 +2,7 @@
 // Copyright (c) 2026 Cloudflare, Inc.
 // Licensed under the Apache 2.0 license found in the LICENSE file or at:
 // https://opensource.org/licenses/Apache-2.0
+// Modified by the litesurf contributors: adapted the startup CLI for the litesurf package and launch API.
 
 import { parseArgs } from "node:util";
 import { launch } from "../src/index.mjs";

@@ -1,0 +1,2 @@
+# Preserve original license bytes for checksum verification.
+licenses/** -text -whitespace

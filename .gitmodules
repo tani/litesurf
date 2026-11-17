@@ -1,0 +1,3 @@
+[submodule "upstream/kitesurf"]
+	path = upstream/kitesurf
+	url = https://github.com/cloudflare/kitesurf

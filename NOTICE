@@ -1,0 +1,15 @@
+litesurf
+
+litesurf is an independent Node.js adapter for Kitesurf. It is not an official
+Cloudflare package. Its runtime loader is adapted from Kitesurf's
+scripts/wpt-engine.mjs, Copyright (c) 2026 Cloudflare, Inc., under Apache-2.0.
+The Node.js API, CLI, build orchestration, and packaging are maintained here.
+
+The Kitesurf engine source is kept unmodified in the upstream/kitesurf Git
+submodule. Its generated Worker, WebAssembly, and public assets are distributed
+under dist/. See dist/upstream.json for the exact source revision and
+dist/licenses/ for upstream notices, license texts, and the source Cargo locks.
+
+Release tarballs also include dist/licenses/THIRD_PARTY_NOTICES.txt and
+dist/licenses/SOURCE_AVAILABILITY.txt. The latter identifies the accompanying
+source archive, including the exact patched MPL-2.0 dependency sources.

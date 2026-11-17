@@ -1,0 +1,160 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Verify release version
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          node --input-type=module - <<'JS'
+          import fs from 'node:fs';
+          const {version} = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          if (process.env.REF_TYPE === 'tag' && process.env.REF_NAME !== `v${version}`) {
+            throw new Error(`Tag ${process.env.REF_NAME} does not match package version ${version}`);
+          }
+          JS
+
+      - name: Install Bazelisk and adapter dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/bazelisk" @bazel/bazelisk@1.28.1 --no-audit --no-fund
+          echo "$RUNNER_TEMP/bazelisk/node_modules/.bin" >> "$GITHUB_PATH"
+          npm ci --no-audit --no-fund
+
+      - name: Build runtime, license notices, and matching sources
+        env:
+          RELEASE_REPOSITORY: ${{ github.repository }}
+        run: npm run release:prepare -- --repository "$RELEASE_REPOSITORY"
+
+      - name: Verify adapter and browser behavior
+        run: |
+          npm run check
+          npm run test:e2e
+          npm run test:release
+
+      - name: Verify final release tarballs
+        run: |
+          version="$(node -p 'require("./package.json").version')"
+          node scripts/verify-release.mjs "release/v$version"
+          LITESURF_TEST_TARBALL="$PWD/release/v$version/litesurf-v$version.tgz" npm run test:package
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-tarballs
+          path: release/v*/*
+          if-no-files-found: error
+          retention-days: 14
+
+  gh_release:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: prepare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Install verification tools
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-tarballs
+          path: release-assets
+
+      - name: Recheck downloaded assets
+        run: node scripts/verify-release.mjs release-assets
+
+      - name: Upload all assets before publishing the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$RELEASE_TAG" --verify-tag --draft \
+            --title "litesurf $RELEASE_TAG" \
+            --notes-file release-assets/RELEASE_NOTES.txt \
+            release-assets/*.tgz release-assets/*.tar.gz \
+            release-assets/SHA256SUMS release-assets/release.json
+          gh release edit "$RELEASE_TAG" --draft=false
+
+  npm_release:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && vars.NPM_PUBLISH_ENABLED == 'true'
+    needs: gh_release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Install verification tools
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Verify npm supports trusted publishing
+        run: |
+          npm --version | node --input-type=module -e '
+            let version = "";
+            for await (const chunk of process.stdin) version += chunk;
+            const [major, minor, patch] = version.trim().split(".").map(Number);
+            if (!(major > 11 || (major === 11 && (minor > 5 || (minor === 5 && patch >= 1))))) {
+              throw new Error("Trusted publishing requires npm >=11.5.1; got " + version.trim());
+            }
+          '
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-tarballs
+          path: release-assets
+
+      - name: Recheck downloaded assets
+        run: node scripts/verify-release.mjs release-assets
+
+      - name: Publish verified runtime to npm using OIDC
+        run: |
+          version="$(node -p 'require("./package.json").version')"
+          npm publish "release-assets/litesurf-v$version.tgz" \
+            --ignore-scripts --access public --provenance \
+            --registry https://registry.npmjs.org

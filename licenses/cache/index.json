@@ -1,0 +1,415 @@
+{
+  "anyrender@0.14.0": {
+    "repository": "https://github.com/dioxuslabs/anyrender",
+    "revision": "cf0f14776102ec775af61bcdcaac2ab345f4fafb",
+    "files": [
+      {
+        "path": "licenses/cache/dioxuslabs--anyrender--cf0f14776102/LICENSE-APACHE",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/anyrender/cf0f14776102ec775af61bcdcaac2ab345f4fafb/LICENSE-APACHE",
+        "sha256": "95bd3988beee069fa2848f648dab43cc6e0b2add2ad6bcb17360caf749802bcc"
+      },
+      {
+        "path": "licenses/cache/dioxuslabs--anyrender--cf0f14776102/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/anyrender/cf0f14776102ec775af61bcdcaac2ab345f4fafb/LICENSE-MIT",
+        "sha256": "30fefc3a7d6a0041541858293bcbea2dde4caa4c0a5802f996a7f7e8c0085652"
+      }
+    ]
+  },
+  "anyrender_svg@0.15.0": {
+    "repository": "https://github.com/dioxuslabs/anyrender",
+    "revision": "cf0f14776102ec775af61bcdcaac2ab345f4fafb",
+    "files": [
+      {
+        "path": "licenses/cache/dioxuslabs--anyrender--cf0f14776102/LICENSE-APACHE",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/anyrender/cf0f14776102ec775af61bcdcaac2ab345f4fafb/LICENSE-APACHE",
+        "sha256": "95bd3988beee069fa2848f648dab43cc6e0b2add2ad6bcb17360caf749802bcc"
+      },
+      {
+        "path": "licenses/cache/dioxuslabs--anyrender--cf0f14776102/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/anyrender/cf0f14776102ec775af61bcdcaac2ab345f4fafb/LICENSE-MIT",
+        "sha256": "30fefc3a7d6a0041541858293bcbea2dde4caa4c0a5802f996a7f7e8c0085652"
+      }
+    ]
+  },
+  "anyrender_vello_cpu@0.18.0": {
+    "repository": "https://github.com/dioxuslabs/anyrender",
+    "revision": "cf0f14776102ec775af61bcdcaac2ab345f4fafb",
+    "files": [
+      {
+        "path": "licenses/cache/dioxuslabs--anyrender--cf0f14776102/LICENSE-APACHE",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/anyrender/cf0f14776102ec775af61bcdcaac2ab345f4fafb/LICENSE-APACHE",
+        "sha256": "95bd3988beee069fa2848f648dab43cc6e0b2add2ad6bcb17360caf749802bcc"
+      },
+      {
+        "path": "licenses/cache/dioxuslabs--anyrender--cf0f14776102/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/anyrender/cf0f14776102ec775af61bcdcaac2ab345f4fafb/LICENSE-MIT",
+        "sha256": "30fefc3a7d6a0041541858293bcbea2dde4caa4c0a5802f996a7f7e8c0085652"
+      }
+    ]
+  },
+  "app_units@0.7.8": {
+    "repository": "https://github.com/servo/app_units",
+    "revision": "2e4e0e0ad8b43bf49a1d3d84e3ca4c55367314a7",
+    "files": []
+  },
+  "base64-simd@0.8.0": {
+    "repository": "https://github.com/Nugine/simd",
+    "revision": "d74c030d9dc4f3cae02146d1f497ff62726ef09a",
+    "files": [
+      {
+        "path": "licenses/cache/Nugine--simd--d74c030d9dc4/LICENSE",
+        "url": "https://raw.githubusercontent.com/Nugine/simd/d74c030d9dc4f3cae02146d1f497ff62726ef09a/LICENSE",
+        "sha256": "71674605ec4c087fe9eb534e3e4f9e26eb2e4aabcd76a29fd156c6a844d44b3d"
+      }
+    ]
+  },
+  "vsimd@0.8.0": {
+    "repository": "https://github.com/Nugine/simd",
+    "revision": "d74c030d9dc4f3cae02146d1f497ff62726ef09a",
+    "files": [
+      {
+        "path": "licenses/cache/Nugine--simd--d74c030d9dc4/LICENSE",
+        "url": "https://raw.githubusercontent.com/Nugine/simd/d74c030d9dc4f3cae02146d1f497ff62726ef09a/LICENSE",
+        "sha256": "71674605ec4c087fe9eb534e3e4f9e26eb2e4aabcd76a29fd156c6a844d44b3d"
+      }
+    ]
+  },
+  "blitz-dom@0.3.0-beta.4": {
+    "repository": "https://github.com/dioxuslabs/blitz",
+    "revision": "92b11f1bd8ab7975411328b0406a95a09445b4e7",
+    "files": [
+      {
+        "path": "licenses/cache/dioxuslabs--blitz--92b11f1bd8ab/LICENSE-APACHE",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/blitz/92b11f1bd8ab7975411328b0406a95a09445b4e7/LICENSE-APACHE",
+        "sha256": "95bd3988beee069fa2848f648dab43cc6e0b2add2ad6bcb17360caf749802bcc"
+      },
+      {
+        "path": "licenses/cache/dioxuslabs--blitz--92b11f1bd8ab/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/blitz/92b11f1bd8ab7975411328b0406a95a09445b4e7/LICENSE-MIT",
+        "sha256": "30fefc3a7d6a0041541858293bcbea2dde4caa4c0a5802f996a7f7e8c0085652"
+      }
+    ]
+  },
+  "blitz-html@0.3.0-beta.4": {
+    "repository": "https://github.com/dioxuslabs/blitz",
+    "revision": "92b11f1bd8ab7975411328b0406a95a09445b4e7",
+    "files": [
+      {
+        "path": "licenses/cache/dioxuslabs--blitz--92b11f1bd8ab/LICENSE-APACHE",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/blitz/92b11f1bd8ab7975411328b0406a95a09445b4e7/LICENSE-APACHE",
+        "sha256": "95bd3988beee069fa2848f648dab43cc6e0b2add2ad6bcb17360caf749802bcc"
+      },
+      {
+        "path": "licenses/cache/dioxuslabs--blitz--92b11f1bd8ab/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/blitz/92b11f1bd8ab7975411328b0406a95a09445b4e7/LICENSE-MIT",
+        "sha256": "30fefc3a7d6a0041541858293bcbea2dde4caa4c0a5802f996a7f7e8c0085652"
+      }
+    ]
+  },
+  "blitz-paint@0.3.0-beta.4": {
+    "repository": "https://github.com/dioxuslabs/blitz",
+    "revision": "92b11f1bd8ab7975411328b0406a95a09445b4e7",
+    "files": [
+      {
+        "path": "licenses/cache/dioxuslabs--blitz--92b11f1bd8ab/LICENSE-APACHE",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/blitz/92b11f1bd8ab7975411328b0406a95a09445b4e7/LICENSE-APACHE",
+        "sha256": "95bd3988beee069fa2848f648dab43cc6e0b2add2ad6bcb17360caf749802bcc"
+      },
+      {
+        "path": "licenses/cache/dioxuslabs--blitz--92b11f1bd8ab/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/blitz/92b11f1bd8ab7975411328b0406a95a09445b4e7/LICENSE-MIT",
+        "sha256": "30fefc3a7d6a0041541858293bcbea2dde4caa4c0a5802f996a7f7e8c0085652"
+      }
+    ]
+  },
+  "blitz-traits@0.3.0-beta.4": {
+    "repository": "https://github.com/dioxuslabs/blitz",
+    "revision": "92b11f1bd8ab7975411328b0406a95a09445b4e7",
+    "files": [
+      {
+        "path": "licenses/cache/dioxuslabs--blitz--92b11f1bd8ab/LICENSE-APACHE",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/blitz/92b11f1bd8ab7975411328b0406a95a09445b4e7/LICENSE-APACHE",
+        "sha256": "95bd3988beee069fa2848f648dab43cc6e0b2add2ad6bcb17360caf749802bcc"
+      },
+      {
+        "path": "licenses/cache/dioxuslabs--blitz--92b11f1bd8ab/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/blitz/92b11f1bd8ab7975411328b0406a95a09445b4e7/LICENSE-MIT",
+        "sha256": "30fefc3a7d6a0041541858293bcbea2dde4caa4c0a5802f996a7f7e8c0085652"
+      }
+    ]
+  },
+  "stylo_taffy@0.3.0-beta.4": {
+    "repository": "https://github.com/dioxuslabs/blitz",
+    "revision": "92b11f1bd8ab7975411328b0406a95a09445b4e7",
+    "files": [
+      {
+        "path": "licenses/cache/dioxuslabs--blitz--92b11f1bd8ab/LICENSE-APACHE",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/blitz/92b11f1bd8ab7975411328b0406a95a09445b4e7/LICENSE-APACHE",
+        "sha256": "95bd3988beee069fa2848f648dab43cc6e0b2add2ad6bcb17360caf749802bcc"
+      },
+      {
+        "path": "licenses/cache/dioxuslabs--blitz--92b11f1bd8ab/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/blitz/92b11f1bd8ab7975411328b0406a95a09445b4e7/LICENSE-MIT",
+        "sha256": "30fefc3a7d6a0041541858293bcbea2dde4caa4c0a5802f996a7f7e8c0085652"
+      }
+    ]
+  },
+  "boa_ast@0.22.0": {
+    "repository": "https://github.com/boa-dev/boa",
+    "revision": "337a3668a0dc86dd401ea20906e782249a64a228",
+    "files": [
+      {
+        "path": "licenses/cache/boa-dev--boa--337a3668a0dc/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/boa-dev/boa/337a3668a0dc86dd401ea20906e782249a64a228/LICENSE-MIT",
+        "sha256": "60d7cf4b66cef6bab24701e25f87829c4ce01fb734def53c41e5ed79ab434cb3"
+      }
+    ]
+  },
+  "boa_engine@0.22.0": {
+    "repository": "https://github.com/boa-dev/boa",
+    "revision": "337a3668a0dc86dd401ea20906e782249a64a228",
+    "files": [
+      {
+        "path": "licenses/cache/boa-dev--boa--337a3668a0dc/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/boa-dev/boa/337a3668a0dc86dd401ea20906e782249a64a228/LICENSE-MIT",
+        "sha256": "60d7cf4b66cef6bab24701e25f87829c4ce01fb734def53c41e5ed79ab434cb3"
+      }
+    ]
+  },
+  "boa_gc@0.22.0": {
+    "repository": "https://github.com/boa-dev/boa",
+    "revision": "337a3668a0dc86dd401ea20906e782249a64a228",
+    "files": [
+      {
+        "path": "licenses/cache/boa-dev--boa--337a3668a0dc/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/boa-dev/boa/337a3668a0dc86dd401ea20906e782249a64a228/LICENSE-MIT",
+        "sha256": "60d7cf4b66cef6bab24701e25f87829c4ce01fb734def53c41e5ed79ab434cb3"
+      }
+    ]
+  },
+  "boa_interner@0.22.0": {
+    "repository": "https://github.com/boa-dev/boa",
+    "revision": "337a3668a0dc86dd401ea20906e782249a64a228",
+    "files": [
+      {
+        "path": "licenses/cache/boa-dev--boa--337a3668a0dc/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/boa-dev/boa/337a3668a0dc86dd401ea20906e782249a64a228/LICENSE-MIT",
+        "sha256": "60d7cf4b66cef6bab24701e25f87829c4ce01fb734def53c41e5ed79ab434cb3"
+      }
+    ]
+  },
+  "boa_parser@0.22.0": {
+    "repository": "https://github.com/boa-dev/boa",
+    "revision": "337a3668a0dc86dd401ea20906e782249a64a228",
+    "files": [
+      {
+        "path": "licenses/cache/boa-dev--boa--337a3668a0dc/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/boa-dev/boa/337a3668a0dc86dd401ea20906e782249a64a228/LICENSE-MIT",
+        "sha256": "60d7cf4b66cef6bab24701e25f87829c4ce01fb734def53c41e5ed79ab434cb3"
+      }
+    ]
+  },
+  "boa_string@0.22.0": {
+    "repository": "https://github.com/boa-dev/boa",
+    "revision": "337a3668a0dc86dd401ea20906e782249a64a228",
+    "files": [
+      {
+        "path": "licenses/cache/boa-dev--boa--337a3668a0dc/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/boa-dev/boa/337a3668a0dc86dd401ea20906e782249a64a228/LICENSE-MIT",
+        "sha256": "60d7cf4b66cef6bab24701e25f87829c4ce01fb734def53c41e5ed79ab434cb3"
+      }
+    ]
+  },
+  "debug_timer@0.1.3": {
+    "repository": "https://github.com/dioxuslabs/blitz",
+    "revision": "078b082ced8cc1e35b87c4d5fd85b9cffafc9e47",
+    "files": [
+      {
+        "path": "licenses/cache/dioxuslabs--blitz--078b082ced8c/LICENSE-APACHE",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/blitz/078b082ced8cc1e35b87c4d5fd85b9cffafc9e47/LICENSE-APACHE",
+        "sha256": "95bd3988beee069fa2848f648dab43cc6e0b2add2ad6bcb17360caf749802bcc"
+      },
+      {
+        "path": "licenses/cache/dioxuslabs--blitz--078b082ced8c/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/dioxuslabs/blitz/078b082ced8cc1e35b87c4d5fd85b9cffafc9e47/LICENSE-MIT",
+        "sha256": "30fefc3a7d6a0041541858293bcbea2dde4caa4c0a5802f996a7f7e8c0085652"
+      }
+    ]
+  },
+  "krilla@0.8.2": {
+    "repository": "https://github.com/LaurenzV/krilla",
+    "revision": "3ffdf0588cf98050aad6edba51ca70162e1fb5b5",
+    "files": [
+      {
+        "path": "licenses/cache/LaurenzV--krilla--3ffdf0588cf9/LICENSE_APACHE",
+        "url": "https://raw.githubusercontent.com/LaurenzV/krilla/3ffdf0588cf98050aad6edba51ca70162e1fb5b5/LICENSE_APACHE",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      },
+      {
+        "path": "licenses/cache/LaurenzV--krilla--3ffdf0588cf9/LICENSE_MIT",
+        "url": "https://raw.githubusercontent.com/LaurenzV/krilla/3ffdf0588cf98050aad6edba51ca70162e1fb5b5/LICENSE_MIT",
+        "sha256": "9d1eb142840c7acfd5511b4dd298cece3f0053f5809228906445cd8a3365592f"
+      },
+      {
+        "path": "licenses/cache/LaurenzV--krilla--3ffdf0588cf9/NOTICE.md",
+        "url": "https://raw.githubusercontent.com/LaurenzV/krilla/3ffdf0588cf98050aad6edba51ca70162e1fb5b5/NOTICE.md",
+        "sha256": "7aa87a70e18c9c160b5a14e24b46a8e407858b21fed635920c701657b4bd7976"
+      }
+    ]
+  },
+  "opentelemetry@0.32.0": {
+    "repository": "https://github.com/open-telemetry/opentelemetry-rust",
+    "revision": "ec289cb3c6f8260951699c51df968560943c1451",
+    "files": [
+      {
+        "path": "licenses/cache/open-telemetry--opentelemetry-rust--ec289cb3c6f8/LICENSE",
+        "url": "https://raw.githubusercontent.com/open-telemetry/opentelemetry-rust/ec289cb3c6f8260951699c51df968560943c1451/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+      }
+    ]
+  },
+  "opentelemetry_sdk@0.32.1": {
+    "repository": "https://github.com/open-telemetry/opentelemetry-rust",
+    "revision": "284a37d93b3856e1975c2807ba3af1421ebd9b52",
+    "files": [
+      {
+        "path": "licenses/cache/open-telemetry--opentelemetry-rust--284a37d93b38/LICENSE",
+        "url": "https://raw.githubusercontent.com/open-telemetry/opentelemetry-rust/284a37d93b3856e1975c2807ba3af1421ebd9b52/LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+      }
+    ]
+  },
+  "selectors@0.41.0": {
+    "repository": "https://github.com/servo/stylo",
+    "revision": "34d25f741765a0bdb894f8271852e633299352d8",
+    "files": []
+  },
+  "stylo@0.22.0": {
+    "repository": "https://github.com/servo/stylo",
+    "revision": "34d25f741765a0bdb894f8271852e633299352d8",
+    "files": []
+  },
+  "stylo_atoms@0.22.0": {
+    "repository": "https://github.com/servo/stylo",
+    "revision": "34d25f741765a0bdb894f8271852e633299352d8",
+    "files": []
+  },
+  "stylo_dom@0.22.0": {
+    "repository": "https://github.com/servo/stylo",
+    "revision": "34d25f741765a0bdb894f8271852e633299352d8",
+    "files": []
+  },
+  "stylo_static_prefs@0.22.0": {
+    "repository": "https://github.com/servo/stylo",
+    "revision": "34d25f741765a0bdb894f8271852e633299352d8",
+    "files": []
+  },
+  "stylo_traits@0.22.0": {
+    "repository": "https://github.com/servo/stylo",
+    "revision": "34d25f741765a0bdb894f8271852e633299352d8",
+    "files": []
+  },
+  "to_shmem@0.6.0": {
+    "repository": "https://github.com/servo/stylo",
+    "revision": "34d25f741765a0bdb894f8271852e633299352d8",
+    "files": []
+  },
+  "small_btree@0.1.0": {
+    "repository": "https://github.com/boa-dev/boa",
+    "revision": "ad8739f5e0b51d20faf7a2cce98afa5c40121438",
+    "files": [
+      {
+        "path": "licenses/cache/boa-dev--boa--ad8739f5e0b5/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/boa-dev/boa/ad8739f5e0b51d20faf7a2cce98afa5c40121438/LICENSE-MIT",
+        "sha256": "60d7cf4b66cef6bab24701e25f87829c4ce01fb734def53c41e5ed79ab434cb3"
+      }
+    ]
+  },
+  "tag_ptr@0.1.0": {
+    "repository": "https://github.com/boa-dev/boa",
+    "revision": "ad8739f5e0b51d20faf7a2cce98afa5c40121438",
+    "files": [
+      {
+        "path": "licenses/cache/boa-dev--boa--ad8739f5e0b5/LICENSE-MIT",
+        "url": "https://raw.githubusercontent.com/boa-dev/boa/ad8739f5e0b51d20faf7a2cce98afa5c40121438/LICENSE-MIT",
+        "sha256": "60d7cf4b66cef6bab24701e25f87829c4ce01fb734def53c41e5ed79ab434cb3"
+      }
+    ]
+  },
+  "taffy@0.15.0": {
+    "repository": "https://github.com/DioxusLabs/taffy",
+    "revision": "eb6450694f33e2b7413e40677f230ff63f0fc194",
+    "files": [
+      {
+        "path": "licenses/cache/DioxusLabs--taffy--eb6450694f33/LICENSE",
+        "url": "https://raw.githubusercontent.com/DioxusLabs/taffy/eb6450694f33e2b7413e40677f230ff63f0fc194/LICENSE",
+        "sha256": "f97daf1a0124413dccf399a4e6626b4b74acd05282f80b6d64ac82225650b77a"
+      }
+    ]
+  },
+  "wuff@0.2.9": {
+    "repository": "https://github.com/nicoburns/wuff",
+    "revision": "78e67f52713c0a2c36bd083fea18ba029565c9ec",
+    "files": [
+      {
+        "path": "licenses/cache/nicoburns--wuff--78e67f52713c/LICENSE",
+        "url": "https://raw.githubusercontent.com/nicoburns/wuff/78e67f52713c0a2c36bd083fea18ba029565c9ec/LICENSE",
+        "sha256": "4b373ba4395e35d44ba1f41202c179b57ca3c5ba5e4a1aaafa1547aede7e1eb7"
+      }
+    ]
+  },
+  "zune-core@0.4.12": {
+    "repository": "https://github.com/etemesi254/zune-image",
+    "revision": "f8fbb123d5ed04441e8324a555bfcda0cb1bd28f",
+    "files": [
+      {
+        "path": "licenses/cache/etemesi254--zune-image--f8fbb123d5ed/LICENSE-ZLIB",
+        "url": "https://raw.githubusercontent.com/etemesi254/zune-image/f8fbb123d5ed04441e8324a555bfcda0cb1bd28f/LICENSE-ZLIB",
+        "sha256": "7fa429541e55b1509909e058f2d21a37467e4958ec713b357f6e0cf9dc4ee352"
+      },
+      {
+        "path": "licenses/cache/etemesi254--zune-image--f8fbb123d5ed/LICENSE.md",
+        "url": "https://raw.githubusercontent.com/etemesi254/zune-image/f8fbb123d5ed04441e8324a555bfcda0cb1bd28f/LICENSE.md",
+        "sha256": "c6dff146a9f31848ac296faa5a08a4253caf2c384c86f906dc99e7fc0a39cc8c"
+      }
+    ]
+  },
+  "zune-jpeg@0.4.21": {
+    "repository": "https://github.com/etemesi254/zune-image",
+    "revision": "fa2c767a01d7d9373911d0bf63e0588553d67e0e",
+    "files": [
+      {
+        "path": "licenses/cache/etemesi254--zune-image--fa2c767a01d7/LICENSE-ZLIB",
+        "url": "https://raw.githubusercontent.com/etemesi254/zune-image/fa2c767a01d7d9373911d0bf63e0588553d67e0e/LICENSE-ZLIB",
+        "sha256": "7fa429541e55b1509909e058f2d21a37467e4958ec713b357f6e0cf9dc4ee352"
+      },
+      {
+        "path": "licenses/cache/etemesi254--zune-image--fa2c767a01d7/LICENSE.md",
+        "url": "https://raw.githubusercontent.com/etemesi254/zune-image/fa2c767a01d7d9373911d0bf63e0588553d67e0e/LICENSE.md",
+        "sha256": "c6dff146a9f31848ac296faa5a08a4253caf2c384c86f906dc99e7fc0a39cc8c"
+      }
+    ]
+  },
+  "npm:web-bot-auth@0.1.3": {
+    "repository": "https://github.com/cloudflare/web-bot-auth",
+    "revision": "2646df4e5a475fd2901ffc7bd605b65225c66f84",
+    "files": [
+      {
+        "path": "licenses/cache/cloudflare--web-bot-auth--2646df4e5a47/LICENSE",
+        "url": "https://raw.githubusercontent.com/cloudflare/web-bot-auth/2646df4e5a475fd2901ffc7bd605b65225c66f84/LICENSE",
+        "sha256": "c442cd87211d2bab6c01bce90efc4e8509db3dc712eebf377e44e47f4e1ffded"
+      }
+    ]
+  },
+  "npm:jsonwebkey-thumbprint@0.1.0": {
+    "repository": "https://github.com/cloudflare/web-bot-auth",
+    "revision": "d72fdec0bc57b02c8754fedc70d475512711850a",
+    "files": [
+      {
+        "path": "licenses/cache/cloudflare--web-bot-auth--d72fdec0bc57/LICENSE",
+        "url": "https://raw.githubusercontent.com/cloudflare/web-bot-auth/d72fdec0bc57b02c8754fedc70d475512711850a/LICENSE",
+        "sha256": "c442cd87211d2bab6c01bce90efc4e8509db3dc712eebf377e44e47f4e1ffded"
+      }
+    ]
+  }
+}

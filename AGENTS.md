@@ -1,0 +1,21 @@
+# Working on litesurf
+
+- Keep `upstream/kitesurf` unmodified. It is a Git submodule pinned by the gitlink.
+- Put the Node.js API in `src/`, the CLI in `bin/`, and build integration in `scripts/`.
+- Use upstream's existing Bazel targets; do not add targets or scripts inside the submodule.
+- `npm run build` creates `dist/` with regular files, source provenance, and upstream notices.
+- `nix develop` supplies host tools; `nix run .#build` installs dependencies and builds the checkout.
+- Keep `flake.lock` pinned and run `nix flake check` after changing Nix configuration.
+- Run `npm run check`, `npm run test:e2e`, and `npm run test:package` after relevant changes.
+- `test:package` installs a local tarball in a temporary project and needs registry access.
+- Keep public API types in JSDoc; generate `dist/types/index.d.mts` with `npm run build:types`.
+- Use zx for management-script command execution; keep it a development dependency.
+- Reuse zx fs/glob/tmpdir and the working-directory presets in scripts/lib/shell.mjs.
+- Run upstream checks when changing the pinned upstream revision, not for adapter-only changes.
+- Never publish or push unless explicitly requested. Do not commit generated `dist/` or tarballs.
+- Keep release orchestration in `scripts/release.mjs` and its stages in `scripts/release/`; pair runtime archives with their matching sources.
+- Run `scripts/verify-release.mjs` and Node.js release tests after changing release packaging.
+- Pin license-cache checksums and GitHub Actions revisions; do not silently substitute missing texts.
+- Keep user instructions in README.md and maintainer instructions under docs/.
+- Keep dated audit snapshots under docs/audits/; release inventories are generated under dist/.
+- `npm run clean` removes intermediates while retaining dist/, release/, and installed dependencies.

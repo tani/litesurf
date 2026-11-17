@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.dist-build-*/
+*.tgz
+*.log
+.DS_Store
+/result
+/result-*
+/release/
+/.release-work/
+__pycache__/

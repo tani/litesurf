@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "noEmitOnError": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2023",
+    "lib": ["ES2023", "ESNext.Disposable"],
+    "types": ["node"],
+    "skipLibCheck": true,
+    "rootDir": "src",
+    "outDir": "dist/types"
+  },
+  "include": ["src/**/*.mjs"]
+}

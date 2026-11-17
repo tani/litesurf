@@ -152,7 +152,10 @@ Review the upstream diff and its pinned Miniflare API when choosing a revision.
 Run upstream's `pnpm run check` and the smallest relevant upstream e2e subset
 when updating the engine revision. Commit the submodule pointer together with
 any adapter changes it requires. Generated artifacts stay out of Git and are
-rebuilt for publication. Publishing to npm remains a separate, explicit action.
+rebuilt for publication. Manual updates use the release workflow separately.
+The [monthly update workflow](releasing.md#monthly-upstream-updates) automates
+gitlink and patch-version updates, verifies them, and submits the resulting
+release to npm staging. Final npm approval remains manual.
 
 ## Maintenance commands
 

@@ -59,7 +59,7 @@
     "start": "node bin/litesurf.mjs",
     "check": "npm run check:types && node scripts/check.mjs",
     "check:upstream": "node scripts/verify-upstream.mjs",
-    "test": "node --test test/runtime.test.mjs test/upstream.test.mjs test/cli.test.mjs test/dom.test.mjs",
+    "test": "node --test test/runtime.test.mjs test/upstream.test.mjs test/update-upstream.test.mjs test/cli.test.mjs test/dom.test.mjs",
     "test:e2e": "node --test test/runtime.e2e.test.mjs",
     "test:package": "node --test test/package.e2e.test.mjs",
     "prepack": "npm run build:types && node scripts/verify-package.mjs",

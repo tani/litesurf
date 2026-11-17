@@ -1,7 +1,7 @@
 # Releases
 
 `.github/workflows/release.yml` prepares and verifies the runtime and its
-corresponding dependency sources. A manual workflow run with empty `publish_tag`
+corresponding dependency sources. A manual workflow run with empty `publish_tag` and `release_tag`
 uploads CI artifacts for review. Pushing a tag matching `package.json`, such as
 `v0.0.1`, also creates a GitHub Release through `gh_release`. All attachments are uploaded to a draft
 before it is published. The separate `npm_release` job depends on `gh_release`
@@ -138,6 +138,59 @@ review commands do not approve the package.
 See npm's [staged publishing](https://docs.npmjs.com/staged-publishing/) and
 [trusted publishing](https://docs.npmjs.com/trusted-publishers/) documentation
 for account-side setup and approval requirements.
+
+## Monthly upstream updates
+
+`.github/workflows/update-upstream.yml` runs on the first of each month at
+01:23 UTC (10:23 Japan time), or manually with **Monthly Kitesurf update**.
+GitHub schedules may be delayed. It always checks out the repository's default
+branch. Like npm staging, it is enabled by `NPM_PUBLISH_ENABLED=true`; setting
+that variable to `false` pauses monthly updates and npm submissions.
+
+Configure the `release.yml` npm trusted publisher above before enabling it.
+The repository must also allow its Actions `GITHUB_TOKEN` to push to the default
+branch and create version tags. Branch or tag protection that blocks the bot
+causes the update to fail; the workflow does not bypass protection or force-push.
+The monthly job uses `contents: write` for the update and `actions: write` to
+dispatch the release. It needs no personal access token or npm token.
+
+The monthly workflow:
+
+1. Resolves Kitesurf's remote default branch and fetches its current commit.
+   With no changes, it exits without a version bump or release. A dirty checkout
+   or a revision that does not descend from the current pin blocks the update.
+2. Checks out the new upstream commit without modifying its tracked files,
+   stages the gitlink, and increments the stable patch version in `package.json`
+   and `package-lock.json`. Prerelease versions are rejected.
+3. Runs upstream's `pnpm run check` and the navigation-fidelity and evaluation
+   across navigation e2e subset using upstream's existing Bazel targets. Then
+   prepares matching runtime/source archives and runs the adapter checks, e2e,
+   Vitest, Bun, release-integrity, and installed-tarball tests. Missing targets,
+   dependency incompatibilities, or missing license notices fail the update
+   instead of being patched automatically.
+4. Commits only the pin and package versions after verification, creates
+   `v<version>`, and atomically pushes the default branch and tag. A concurrent
+   branch update or an existing tag rejects the push without replacing history.
+5. Dispatches `release.yml` at that tag with `release_tag=v<version>`. A
+   `GITHUB_TOKEN` tag push does not trigger another push workflow, so this
+   explicit dispatch is required. The Release run builds and verifies the
+   committed checkout again, publishes its runtime and matching sources to
+   GitHub, checks anonymous source downloads, and stages the runtime on npm
+   through the existing OIDC publisher. The monthly preflight archives are not
+   published; the Release run's verified archives are used throughout publication.
+
+The final npm review and 2FA approval remain manual. Review both workflow runs:
+a successful monthly run means the Release workflow was dispatched, not that
+staging has finished. Checks failing before the push leave the remote pin and
+version unchanged. After a push, failures retain the new commit and tag for
+recovery rather than moving them or reusing a reserved version.
+
+If dispatch fails after the push, manually run **Release** at the existing tag
+with `release_tag` set to the same tag. This performs full preparation and
+publication. Leave `publish_tag` empty. If the GitHub Release already exists,
+use the recovery paths below or `publish_tag` for staging only; do not recreate
+an existing release. If the default branch has not changed upstream since that
+push, rerunning the monthly job is a no-op, not a retry of publication.
 
 ## Recover a verified build
 

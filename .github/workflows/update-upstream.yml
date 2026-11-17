@@ -1,0 +1,106 @@
+name: Monthly Kitesurf update
+
+on:
+  schedule:
+    # First day of each month, 10:23 Japan time (01:23 UTC).
+    - cron: "23 1 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: monthly-kitesurf-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: vars.NPM_PUBLISH_ENABLED == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    permissions:
+      contents: write
+      actions: write
+    env:
+      GH_REPO: ${{ github.repository }}
+      DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+          submodules: recursive
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Install adapter dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Update gitlink and patch version if upstream changed
+        id: update
+        run: node scripts/update-upstream.mjs
+
+      - name: No upstream changes
+        if: steps.update.outputs.changed == 'false'
+        run: echo 'Kitesurf is already current; no version or release created.' >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        if: steps.update.outputs.changed == 'true'
+        with:
+          bun-version: "1.4.4"
+
+      - name: Install Bazelisk and upstream package manager
+        if: steps.update.outputs.changed == 'true'
+        run: |
+          npm install --prefix "$RUNNER_TEMP/build-tools" @bazel/bazelisk@1.28.1 pnpm@9.15.4 --ignore-scripts --no-audit --no-fund
+          echo "$RUNNER_TEMP/build-tools/node_modules/.bin" >> "$GITHUB_PATH"
+
+      - name: Verify upstream checks and navigation e2e subset
+        if: steps.update.outputs.changed == 'true'
+        working-directory: upstream/kitesurf
+        run: |
+          pnpm install --frozen-lockfile --ignore-scripts
+          pnpm run check
+          pnpm run test:e2e -- navigation-fidelity.e2e.test.ts eval-across-navigation.e2e.test.ts
+
+      - name: Prepare matching runtime and sources, then verify adapter behavior
+        if: steps.update.outputs.changed == 'true'
+        run: |
+          npm run release:prepare -- --repository "$GH_REPO"
+          npm run check
+          npm run test:e2e
+          npm run test:vitest
+          npm run test:bun
+          npm run test:release
+          version="$(node -p 'require("./package.json").version')"
+          node scripts/verify-release.mjs "release/v$version"
+          LITESURF_TEST_TARBALL="$PWD/release/v$version/litesurf-v$version.tgz" npm run test:package
+
+      - name: Commit and atomically push the verified pin, version, and tag
+        if: steps.update.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.update.outputs.tag }}
+          UPSTREAM_REVISION: ${{ steps.update.outputs.revision }}
+        run: |
+          npm run check:upstream
+          git diff --exit-code
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "chore: update Kitesurf to $UPSTREAM_REVISION ($RELEASE_TAG)"
+          git tag "$RELEASE_TAG"
+          gh auth setup-git
+          git push --atomic origin "HEAD:refs/heads/$DEFAULT_BRANCH" "refs/tags/$RELEASE_TAG"
+
+      - name: Dispatch the existing release workflow for the verified tag
+        if: steps.update.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.update.outputs.tag }}
+        run: |
+          gh workflow run release.yml --ref "$RELEASE_TAG" -f "release_tag=$RELEASE_TAG"
+          echo "Release dispatched for $RELEASE_TAG. Follow the Release workflow for GitHub assets and npm staging; npm approval remains manual." >> "$GITHUB_STEP_SUMMARY"

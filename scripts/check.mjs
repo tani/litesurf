@@ -12,4 +12,4 @@ for (const directory of ["src", "bin", "scripts", "test"]) {
     await run`${process.execPath} --check ${file}`;
   }
 }
-await run`${process.execPath} --test test/runtime.test.mjs test/upstream.test.mjs test/cli.test.mjs test/dom.test.mjs`;
+await run`${process.execPath} --test test/runtime.test.mjs test/upstream.test.mjs test/update-upstream.test.mjs test/cli.test.mjs test/dom.test.mjs`;

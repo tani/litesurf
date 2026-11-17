@@ -100,3 +100,12 @@ Already published npm versions cannot be overwritten.
 
 See the [npm trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/)
 for the required account-side setup.
+
+## Recover a verified build
+
+If preparation succeeded but GitHub Release publication failed, manually run
+`Publish prepared release` (`recover-release.yml`) with the original workflow
+run ID and its release tag. It checks that the run and tag refer to the same
+commit, downloads the existing artifact, verifies all archives, and publishes
+them together. Both flat and versioned artifact directories are supported.
+This avoids rebuilding or moving an existing version tag.

@@ -11,16 +11,13 @@ on:
         description: Existing release tag matching that run
         required: true
         type: string
-  push:
-    branches: [main]
-    paths: [.github/workflows/recover-release.yml]
 
 permissions:
   contents: write
   actions: read
 
 concurrency:
-  group: release-${{ inputs.tag || 'v0.0.1' }}
+  group: release-${{ inputs.tag }}
   cancel-in-progress: false
 
 jobs:
@@ -28,7 +25,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
-      SOURCE_RUN: ${{ inputs.run_id || '44004724889' }}
+      SOURCE_RUN: ${{ inputs.run_id }}
       RELEASE_TAG: ${{ inputs.tag || 'v0.0.1' }}
       GH_REPO: ${{ github.repository }}
     steps:

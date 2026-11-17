@@ -4,6 +4,12 @@ on:
   push:
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      publish_tag:
+        description: "Publish an existing GitHub Release to npm using OIDC (empty = prepare only)"
+        type: string
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -14,6 +20,7 @@ concurrency:
 
 jobs:
   prepare:
+    if: github.event_name != 'workflow_dispatch' || inputs.publish_tag == ''
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -123,7 +130,10 @@ jobs:
         run: node scripts/verify-publish.mjs release-assets
 
   npm_release:
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && vars.NPM_PUBLISH_ENABLED == 'true'
+    if: >-
+      !cancelled() && vars.NPM_PUBLISH_ENABLED == 'true' &&
+      ((github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && needs.gh_release.result == 'success') ||
+       (github.event_name == 'workflow_dispatch' && inputs.publish_tag != ''))
     needs: gh_release
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -133,6 +143,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.publish_tag || github.ref }}
           persist-credentials: false
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -156,9 +167,24 @@ jobs:
           '
 
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        if: github.event_name == 'push'
         with:
           name: release-tarballs
           path: release-assets
+
+      - name: Download an existing public release
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ inputs.publish_tag }}
+        run: |
+          version="$(node -p 'require("./package.json").version')"
+          test "$RELEASE_TAG" = "v$version"
+          gh release download "$RELEASE_TAG" --dir release-assets \
+            --pattern "litesurf-$RELEASE_TAG.tgz" \
+            --pattern "litesurf-$RELEASE_TAG-sources.tar.gz" \
+            --pattern SHA256SUMS --pattern release.json
 
       - name: Verify release and public source availability before npm publication
         run: node scripts/verify-publish.mjs release-assets
@@ -166,6 +192,6 @@ jobs:
       - name: Publish verified runtime to npm using OIDC
         run: |
           version="$(node -p 'require("./package.json").version')"
-          npm publish "release-assets/litesurf-v$version.tgz" \
+          npm publish "./release-assets/litesurf-v$version.tgz" \
             --ignore-scripts --access public --provenance \
             --registry https://registry.npmjs.org

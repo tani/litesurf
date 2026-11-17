@@ -1,9 +1,9 @@
 # Releases
 
 `.github/workflows/release.yml` prepares and verifies the runtime and its
-corresponding dependency sources. A manual workflow run uploads CI artifacts
-for review. Pushing a tag matching `package.json`, such as `v0.0.1`, also creates
-a GitHub Release through `gh_release`. All attachments are uploaded to a draft
+corresponding dependency sources. A manual workflow run with empty `publish_tag`
+uploads CI artifacts for review. Pushing a tag matching `package.json`, such as
+`v0.0.1`, also creates a GitHub Release through `gh_release`. All attachments are uploaded to a draft
 before it is published. The separate `npm_release` job depends on `gh_release`.
 
 The attachments are:
@@ -94,9 +94,20 @@ the matching `v<version>` tag. After the GitHub Release and its source archive a
 public, `npm_release` verifies and publishes the same runtime tarball using OIDC.
 The job uses a GitHub-hosted runner, Node 24, npm >=11.5.1, `id-token: write`, and
 provenance. No `NPM_TOKEN` or `NODE_AUTH_TOKEN` secret is needed. Manual workflow
-runs still only prepare artifacts. A failed npm job can be rerun after fixing the
-publisher configuration; it does not require rebuilding or recreating the release.
+runs with empty `publish_tag` still only prepare artifacts. A failed npm job can
+be rerun after fixing the publisher configuration; it does not require rebuilding
+or recreating the release.
 Already published npm versions cannot be overwritten.
+
+To retry npm publication using a corrected workflow without moving an existing
+release tag, run `Release` from the `main` branch with `publish_tag` set to the
+existing tag (for example, `v0.0.2`). This skips preparation and GitHub Release
+creation, checks out the tag's verification tools, downloads the existing public
+release assets, and verifies them before publishing the exact runtime archive
+with OIDC. Leave `publish_tag` empty for the usual artifacts-only manual run.
+The same `NPM_PUBLISH_ENABLED=true` variable and trusted publisher apply. Use
+this recovery after workflow fixes: rerunning an old tag's run uses its old
+workflow definition. No version bump, rebuild, or tag replacement is required.
 
 See the [npm trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/)
 for the required account-side setup.
